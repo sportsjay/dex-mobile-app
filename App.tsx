@@ -1,20 +1,64 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as eva from "@eva-design/eva";
+import { StyleSheet } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer, ParamListBase } from "@react-navigation/native";
+import { EvaIconsPack } from "@ui-kitten/eva-icons";
+import TabBar from "./common/NavigationBar/TabBar";
+import {
+  ApplicationProvider,
+  IconRegistry,
+  Layout,
+} from "@ui-kitten/components";
+import React, { useState } from "react";
+import TopBar from "./common/NavigationBar/TopBar";
+import HomeScreen from "./screens/Home";
+import ExchangeScreen from "./screens/Exchange";
+import ProfileScreen from "./screens/Profile";
+
+export interface BottomTabNavigatorParam extends ParamListBase {
+  Home: undefined;
+  Exchange: undefined;
+  Profile: undefined;
+}
+
+const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParam>();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <React.Fragment>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={eva.dark}>
+        <NavigationView />
+      </ApplicationProvider>
+    </React.Fragment>
+  );
+}
+
+function NavigationView() {
+  return (
+    <Layout style={styles.container}>
+      <NavigationContainer>
+        <BottomTabNavigator.Navigator
+          tabBar={TabBar}
+          screenOptions={{
+            header: TopBar,
+          }}
+        >
+          <BottomTabNavigator.Screen name="Home" component={HomeScreen} />
+          <BottomTabNavigator.Screen
+            name="Exchange"
+            component={ExchangeScreen}
+          />
+          <BottomTabNavigator.Screen name="Profile" component={ProfileScreen} />
+        </BottomTabNavigator.Navigator>
+      </NavigationContainer>
+    </Layout>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "100%",
   },
 });
