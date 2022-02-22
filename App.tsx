@@ -14,6 +14,7 @@ import TopBar from "./common/NavigationBar/TopBar";
 import HomeScreen from "./screens/Home";
 import ExchangeScreen from "./screens/Exchange";
 import ProfileScreen from "./screens/Profile";
+import { RootContext, rootStore } from "./stores";
 
 export interface BottomTabNavigatorParam extends ParamListBase {
   Home: undefined;
@@ -25,12 +26,14 @@ const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParam>();
 
 export default function App() {
   return (
-    <React.Fragment>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.dark}>
-        <NavigationView />
-      </ApplicationProvider>
-    </React.Fragment>
+    <RootContext.Provider value={rootStore}>
+      <React.Fragment>
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider {...eva} theme={eva.dark}>
+          <NavigationView />
+        </ApplicationProvider>
+      </React.Fragment>
+    </RootContext.Provider>
   );
 }
 
